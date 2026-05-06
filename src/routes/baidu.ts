@@ -39,17 +39,17 @@ const getList = async (options: Options, noCache: boolean): Promise<RouterResTyp
     noCache,
     headers: {
       "User-Agent":
-        "Mozilla/5.0 (iPhone; CPU iPhone OS 14_2_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) FxiOS/1.0 Mobile/12F69 Safari/605.1.15",
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36",
     },
   });
-  // 正则查找
   const pattern = /<!--s-data:(.*?)-->/s;
   const matchResult = result.data.match(pattern);
-  const jsonObject = JSON.parse(matchResult[1]).cards[0].content;
+  const jsonObject = JSON.parse(matchResult[1]).data.cards[0].content;
+  const list = jsonObject.filter((v) => v.word && !v.isTop);
   return {
     ...result,
-    data: jsonObject.map((v: RouterType["baidu"]) => ({
-      id: v.index,
+    data: list.map((v: RouterType["baidu"], index: number) => ({
+      id: index + 1,
       title: v.word,
       desc: v.desc,
       cover: v.img,
