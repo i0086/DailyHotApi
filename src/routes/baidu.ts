@@ -45,7 +45,7 @@ const getList = async (options: Options, noCache: boolean): Promise<RouterResTyp
   const pattern = /<!--s-data:(.*?)-->/s;
   const matchResult = result.data.match(pattern);
   const jsonObject = JSON.parse(matchResult[1]).data.cards[0].content;
-  const list = jsonObject.filter((v) => v.word && !v.isTop);
+  const list = jsonObject.filter((v: RouterType["baidu"]) => v.word && !v.isTop);
   return {
     ...result,
     data: list.map((v: RouterType["baidu"], index: number) => ({
