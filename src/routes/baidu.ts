@@ -2,6 +2,10 @@ import type { RouterData, ListContext, Options, RouterResType } from "../types.j
 import type { RouterType } from "../router.types.js";
 import { get } from "../utils/getData.js";
 
+type BaiduRawItem = RouterType["baidu"] & {
+  isTop?: boolean;
+};
+
 const typeMap: Record<string, string> = {
   realtime: "热搜",
   novel: "小说",
@@ -44,8 +48,8 @@ const getList = async (options: Options, noCache: boolean): Promise<RouterResTyp
   });
   const pattern = /<!--s-data:(.*?)-->/s;
   const matchResult = result.data.match(pattern);
-  const jsonObject = JSON.parse(matchResult[1]).data.cards[0].content;
-  const list = jsonObject.filter((v: RouterType["baidu"]) => v.word && !v.isTop);
+  const jsonObject = JSON.parse(matchResult[1]).data.cards[0].content as BaiduRawItem[];
+  const list = jsonObject.filter((v) => v.word && !v.isTop);
   return {
     ...result,
     data: list.map((v: RouterType["baidu"], index: number) => ({
